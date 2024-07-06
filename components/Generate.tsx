@@ -5,7 +5,7 @@ import Papa from "papaparse";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "@/components/ui/checkbox";
 interface DataItem {
   [key: string]: any;
 }
@@ -141,7 +141,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
   };
 
   return (
-    <div className="bg-white shadow-2xl p-10 rounded-md max-w-2xl w-full">
+    <div className="bg-white shadow-2xl p-10 rounded-md max-w-4xl w-full">
       <h1>Create CSV File</h1>
       <div className="flex gap-8 w-full justify-between">
         <div className="flex flex-col gap-2 w-1/2">
@@ -149,7 +149,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
             placeholder="Paste array data here"
             value={inputText}
             onChange={handleTextInput}
-            style={{ width: "100%", minHeight: "100px" }}
+            style={{ width: "100%", minHeight: "300px" }}
           />
           <Button variant={"outline"} onClick={sanitizeInput}>
             Sanitize Input
@@ -180,16 +180,25 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
           ) : (
             <p>No data detected</p>
           )}
-          <Input
-            value={filename}
-            onChange={(e) => setFilename(e.target.value)}
-            placeholder="Filename including path"
-            style={{ width: "100%" }}
-          />
+          <div className="mt-auto flex flex-col gap-2">
+            <Input
+              value={filename}
+              onChange={(e) => setFilename(e.target.value)}
+              placeholder="Filename including path"
+              style={{ width: "100%" }}
+            />
 
-          <Button disabled={selectedFields.length === 0} onClick={downloadCSV}>
-            {!inputData.length ? "No data to download" : selectedFields.length === 0 ? "Select at least one field" : "Download CSV"}
-          </Button>
+            <Button
+              disabled={selectedFields.length === 0}
+              onClick={downloadCSV}
+            >
+              {!inputData.length
+                ? "No data to download"
+                : selectedFields.length === 0
+                ? "Select at least one field"
+                : "Download CSV"}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
