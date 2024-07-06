@@ -5,7 +5,9 @@ import Papa from "papaparse";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+
 interface DataItem {
   [key: string]: any;
 }
@@ -35,6 +37,14 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
         ? [...currentFields, value]
         : currentFields.filter((field) => field !== value)
     );
+  };
+
+  const handleCheckedChange = (checked: boolean, field: string) => {
+    if (checked) {
+      setSelectedFields([...selectedFields, field]);
+    } else {
+      setSelectedFields(selectedFields.filter(f => f !== field));
+    }
   };
 
   const handleTextInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -157,26 +167,25 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
           <Button variant={"outline"} onClick={clearInput}>
             Clear
           </Button>
-          <Button variant={"outline"} onClick={loadSampleData}>
+          <Button variant={"link"} onClick={loadSampleData}>
             Load Sample Data
           </Button>
         </div>
         <div className="w-1/2 flex flex-col gap-2">
           {fieldOptions.length > 0 ? (
-            <div>
-              <h2>Select fields to include in the CSV:</h2>
+            <React.Fragment>
               {fieldOptions.map((field) => (
-                <label key={field}>
-                  <input
-                    type="checkbox"
-                    value={field}
-                    onChange={handleFieldChange}
+                <div key={field} className="flex items-center gap-2">
+                  <Switch
+                    id={field}
                     checked={selectedFields.includes(field)}
+                    onCheckedChange={(checked) => handleCheckedChange(checked, field)}
+                    value={field}
                   />
-                  {field}
-                </label>
+                  <Label htmlFor={field}>{field}</Label>
+                </div>
               ))}
-            </div>
+            </React.Fragment>
           ) : (
             <p>No data detected</p>
           )}
@@ -193,7 +202,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
               onClick={downloadCSV}
             >
               {!inputData.length
-                ? "No data to download"
+                ? "No data to transform"
                 : selectedFields.length === 0
                 ? "Select at least one field"
                 : "Download CSV"}
