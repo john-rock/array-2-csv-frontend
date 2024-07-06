@@ -30,20 +30,11 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
     );
   }, [fieldOptions]);
 
-  const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSelectedFields((currentFields) =>
-      event.target.checked
-        ? [...currentFields, value]
-        : currentFields.filter((field) => field !== value)
-    );
-  };
-
   const handleCheckedChange = (checked: boolean, field: string) => {
     if (checked) {
       setSelectedFields([...selectedFields, field]);
     } else {
-      setSelectedFields(selectedFields.filter(f => f !== field));
+      setSelectedFields(selectedFields.filter((f) => f !== field));
     }
   };
 
@@ -51,8 +42,8 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
     setInputText(event.target.value);
   };
 
+  // Remove unnecessary trailing commas and trim whitespace
   const sanitizeInput = () => {
-    // Remove unnecessary trailing commas and trim whitespace
     const sanitizedText = inputText
       .replace(/,\s*}/g, "}")
       .replace(/,\s*]/g, "]")
@@ -127,7 +118,9 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
     data.forEach((item) => {
       Object.keys(item).forEach((key) => allFields.add(key));
     });
-    setFieldOptions(Array.from(allFields));
+    const fieldsArray = Array.from(allFields);
+    setFieldOptions(fieldsArray);
+    setSelectedFields(fieldsArray);
   };
 
   const downloadCSV = () => {
@@ -179,7 +172,9 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
                   <Switch
                     id={field}
                     checked={selectedFields.includes(field)}
-                    onCheckedChange={(checked) => handleCheckedChange(checked, field)}
+                    onCheckedChange={(checked) =>
+                      handleCheckedChange(checked, field)
+                    }
                     value={field}
                   />
                   <Label htmlFor={field}>{field}</Label>
