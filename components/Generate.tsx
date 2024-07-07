@@ -5,13 +5,21 @@ import Papa from "papaparse";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useCsvGenerator } from "@/hooks/useCsvGenerator";
 import { CsvGeneratorProps } from "@/types/types";
-import { Sparkles } from 'lucide-react';
+import { Sparkles } from "lucide-react";
+import { Info } from "lucide-react";
 
 const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
   const {
@@ -28,15 +36,36 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
     downloadCSV,
   } = useCsvGenerator(initialData);
 
-  console.log(inputText);
-
   return (
     <div className="bg-white shadow-2xl p-10 rounded-md max-w-4xl w-full border fixed">
-      <h1 className="text-bold">Create CSV File</h1>
-      <div className="flex gap-8 w-full justify-between">
-        <div className="flex flex-col gap-2 w-1/2">
+      <Sheet>
+        <SheetTrigger className="absolute right-3 top-2">
+          <Info strokeWidth={2} width={20} />
+        </SheetTrigger>
+        <SheetContent side='top'>
+          <SheetHeader>
+            <SheetTitle>Instructions</SheetTitle>
+            <ol className="text-bold mb-8 text-sm text-left">
+              <li>
+                1. Paste the array you want to convert into the provided input
+                field.
+              </li>
+              <li>
+                2. Click the <code>Sanitize Input</code> button to clean the
+                data.
+              </li>
+              <li>3. Choose the fields to use as headers for the CSV file.</li>
+              <li>
+                4. Click the <code>Download CSV</code> button to save your file.
+              </li>
+            </ol>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
+      <div className="flex gap-8 w-full md:flex-row flex-col justify-between">
+        <div className="flex flex-col gap-2 md:w-1/2 w-full">
           <Textarea
-            placeholder="Paste JSON data here"
+            placeholder="Paste data here"
             value={inputText}
             onChange={handleTextInput}
             style={{ width: "100%", minHeight: "300px" }}
@@ -48,15 +77,18 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
           >
             Load Sample Data
           </Button>
-          {inputText && (
-          <Button variant={"outline"} onClick={sanitizeInput}>
-            Sanitize Input <Sparkles strokeWidth={1} width={15} className="ml-1"/>
+          <Button
+            variant={"outline"}
+            onClick={sanitizeInput}
+            disabled={!inputText}
+          >
+            Sanitize Input{" "}
+            <Sparkles strokeWidth={1} width={15} className="ml-1" />
           </Button>
-          )}
           <Button variant={"outline"} onClick={clearInput}>
             Clear
           </Button>
-          {errorMessage && (
+          {errorMessage && inputText && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
@@ -64,7 +96,8 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
             </Alert>
           )}
         </div>
-        <div className="w-1/2 flex flex-col gap-2">
+        <div className="md:w-1/2 flex flex-col gap-2 w-full">
+          <h2 className="font-medium">Keys to include in CSV:</h2>
           {fieldOptions.length > 0 ? (
             fieldOptions.map((field) => (
               <div key={field} className="flex items-center gap-2">
@@ -80,7 +113,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
               </div>
             ))
           ) : (
-            <p>No data detected</p>
+            <p className="text-xs opacity-50">No keys detected</p>
           )}
           <div className="mt-auto flex flex-col gap-2">
             <Button

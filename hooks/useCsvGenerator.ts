@@ -11,11 +11,20 @@ export const useCsvGenerator = (initialData: DataItem[] = []) => {
     const [fieldOptions, setFieldOptions] = useState<string[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>("");
   
+    // Filter out any fields that are not in the fieldOptions
     useEffect(() => {
       setSelectedFields((currentFields) =>
         currentFields.filter((field) => fieldOptions.includes(field))
       );
     }, [fieldOptions]);
+
+    // Clear the fields if the inputText is empty
+    useEffect(() => {
+        if (inputText === "") {
+          setFieldOptions([]);
+          setSelectedFields([]);
+        }
+      }, [inputText]);
   
     const handleCheckedChange = (checked: boolean, field: string) => {
       setSelectedFields((fields) =>
@@ -24,23 +33,34 @@ export const useCsvGenerator = (initialData: DataItem[] = []) => {
     };
   
     const handleTextInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setInputText(event.target.value);
-      setErrorMessage("");
-    };
+        const newText = event.target.value;
+        setInputText(newText);
+        setErrorMessage("");
+      
+        try {
+          const sanitizedJson = sanitizeJsonInput(newText);
+          setInputText(sanitizedJson);
+      
+          const jsonData = parseJson(sanitizedJson);
+          setInputData(jsonData);
+          extractFieldsFromData(jsonData);
+        } catch (error) {
+          setErrorMessage((error as Error).message);
+        }
+      };
   
-    const sanitizeInput = () => {
-      setErrorMessage("");
-      try {
-        const sanitizedJson = sanitizeJsonInput(inputText);
-        setInputText(sanitizedJson);
-  
-        const jsonData = parseJson(sanitizedJson);
-        setInputData(jsonData);
-        extractFieldsFromData(jsonData);
-      } catch (error) {
-        setErrorMessage((error as Error).message);
-      }
-    };
+      const sanitizeInput = () => {
+        try {
+          const sanitizedJson = sanitizeJsonInput(inputText);
+          setInputText(sanitizedJson);
+      
+          const jsonData = parseJson(sanitizedJson);
+          setInputData(jsonData);
+          extractFieldsFromData(jsonData);
+        } catch (error) {
+          setErrorMessage((error as Error).message);
+        }
+      };
   
     const clearInput = () => {
       setInputText("");
