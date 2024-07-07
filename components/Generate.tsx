@@ -41,7 +41,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
         <SheetTrigger className="absolute right-3 top-2">
           <Info strokeWidth={2} width={20} />
         </SheetTrigger>
-        <SheetContent side='top'>
+        <SheetContent side="top">
           <SheetHeader>
             <SheetTitle>Instructions</SheetTitle>
             <ol className="text-bold mb-8 text-sm text-left">
@@ -50,8 +50,8 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
                 field.
               </li>
               <li>
-                2. If neccessary, click the <code>Sanitize Input</code> button to clean the
-                data.
+                2. If neccessary, click the <code>Sanitize Input</code> button
+                to clean the data.
               </li>
               <li>3. Choose the fields to use as headers for the CSV file.</li>
               <li>

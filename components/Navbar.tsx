@@ -1,7 +1,6 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { GitBranch, FileSpreadsheet } from 'lucide-react';
-
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { GitBranch, FileSpreadsheet } from "lucide-react";
 
 export function Navbar() {
   return (
@@ -11,9 +10,9 @@ export function Navbar() {
         <span className="text-lg font-semibold">array-2-csv</span>
       </Link>
       <Button variant="ghost" size="icon" className="rounded-full">
-      <GitBranch />
+        <GitBranch />
         <span className="sr-only">Github Repo</span>
       </Button>
     </header>
-  )
+  );
 }
