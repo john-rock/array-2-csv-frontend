@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useCsvGenerator } from "@/hooks/useCsvGenerator";
-import { DataItem, CsvGeneratorProps } from "@/types/types";
+import { CsvGeneratorProps } from "@/types/types";
+import { Sparkles } from 'lucide-react';
 
 const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
   const {
@@ -27,7 +28,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
     downloadCSV,
   } = useCsvGenerator(initialData);
 
-  console.log(errorMessage);
+  console.log(inputText);
 
   return (
     <div className="bg-white shadow-2xl p-10 rounded-md max-w-4xl w-full border fixed">
@@ -47,9 +48,11 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
           >
             Load Sample Data
           </Button>
+          {inputText && (
           <Button variant={"outline"} onClick={sanitizeInput}>
-            Sanitize Input
+            Sanitize Input <Sparkles strokeWidth={1} width={15} className="ml-1"/>
           </Button>
+          )}
           <Button variant={"outline"} onClick={clearInput}>
             Clear
           </Button>

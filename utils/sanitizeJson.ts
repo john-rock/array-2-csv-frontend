@@ -7,6 +7,7 @@ export const sanitizeJsonInput = (inputText: string): string => {
     const parsedJson = JSON5.parse(inputText);
     // Convert back to a standard JSON string with proper formatting
     const sanitizedJson = JSON.stringify(parsedJson, null, 2);
+    
     return sanitizedJson;
   } catch (error) {
     throw new Error((error as Error).message);
