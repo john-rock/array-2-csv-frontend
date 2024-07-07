@@ -49,13 +49,9 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
                 1. Paste the array you want to convert into the provided input
                 field.
               </li>
+              <li>2. Choose the fields to use as headers for the CSV file.</li>
               <li>
-                2. If neccessary, click the <code>Sanitize Input</code> button
-                to clean the data.
-              </li>
-              <li>3. Choose the fields to use as headers for the CSV file.</li>
-              <li>
-                4. Click the <code>Download CSV</code> button to save your file.
+                3. Click the <code>Download CSV</code> button to save your file.
               </li>
             </ol>
           </SheetHeader>
@@ -75,14 +71,6 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
             className="mr-auto text-left text-xs pl-0 h-2 py-0 mb-4"
           >
             Load Sample Data
-          </Button>
-          <Button
-            variant={"outline"}
-            onClick={sanitizeInput}
-            disabled={!inputText}
-          >
-            Sanitize Input{" "}
-            <Sparkles strokeWidth={1} width={15} className="ml-1" />
           </Button>
           <Button variant={"outline"} onClick={clearInput}>
             Clear

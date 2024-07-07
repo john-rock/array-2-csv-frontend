@@ -102,6 +102,7 @@ export const useCsvGenerator = (initialData: DataItem[] = []) => {
       2
     );
     setInputText(sampleData);
+    handleTextInput({ target: { value: sampleData } } as any);
   };
 
   const extractFieldsFromData = (data: DataItem[]) => {
