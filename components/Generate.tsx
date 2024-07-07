@@ -140,7 +140,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
       setFieldOptions([]);
     }
   };
-  
+
   const extractFieldsFromData = (data: DataItem[]) => {
     const allFields = new Set<string>();
     data.forEach((item) => {
@@ -217,11 +217,6 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
             <p>No data detected</p>
           )}
           <div className="mt-auto flex flex-col gap-2">
-            <Input
-              placeholder="Enter filename"
-              value={filename}
-              onChange={(e) => setFilename(e.target.value)}
-            />
             <Button
               disabled={selectedFields.length === 0 || inputData.length === 0}
               onClick={downloadCSV}
