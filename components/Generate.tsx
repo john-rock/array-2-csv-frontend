@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-
 interface DataItem {
   [key: string]: any;
 }
@@ -22,6 +21,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
   const [inputData, setInputData] = useState<DataItem[]>(initialData);
   const [inputText, setInputText] = useState<string>("");
   const [fieldOptions, setFieldOptions] = useState<string[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
     // Update the selected fields any time the field options change
@@ -40,16 +40,28 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
 
   const handleTextInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(event.target.value);
+    setErrorMessage(""); // Clear error message on new input
   };
 
-  // Remove unnecessary trailing commas and trim whitespace
   const sanitizeInput = () => {
-    const sanitizedText = inputText
-      .replace(/,\s*}/g, "}")
-      .replace(/,\s*]/g, "]")
-      .trim();
-    setInputText(sanitizedText);
-    processInputData(sanitizedText);
+    // Reset error state before sanitization
+    setErrorMessage("");
+
+    try {
+      // Try to parse the input to see if it's valid JSON
+      JSON.parse(inputText);
+      // Additional sanitization can go here
+      const sanitizedText = inputText
+        .replace(/,\s*}/g, "}")
+        .replace(/,\s*]/g, "]")
+        .trim();
+      setInputText(sanitizedText);
+      processInputData(sanitizedText);
+    } catch (error) {
+      // Catch parsing errors and set an error message
+      setErrorMessage("JSON formatting error: " + (error as any).message);
+      return;
+    }
   };
 
   const clearInput = () => {
@@ -57,6 +69,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
     setInputData([]);
     setFieldOptions([]);
     setSelectedFields([]);
+    setErrorMessage("");
   };
 
   const loadSampleData = () => {
@@ -118,9 +131,8 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
     data.forEach((item) => {
       Object.keys(item).forEach((key) => allFields.add(key));
     });
-    const fieldsArray = Array.from(allFields);
-    setFieldOptions(fieldsArray);
-    setSelectedFields(fieldsArray);
+    setFieldOptions(Array.from(allFields));
+    setSelectedFields(Array.from(allFields)); // Set all fields as selected
   };
 
   const downloadCSV = () => {
@@ -144,25 +156,26 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
   };
 
   return (
-    <div className="bg-white shadow-2xl p-10 rounded-md max-w-4xl w-full">
+    <div className="bg-white shadow-2xl p-10 rounded-md max-w-4xl w-full border">
       <h1>Create CSV File</h1>
       <div className="flex gap-8 w-full justify-between">
         <div className="flex flex-col gap-2 w-1/2">
           <Textarea
-            placeholder="Paste array data here"
+            placeholder="Paste JSON data here"
             value={inputText}
             onChange={handleTextInput}
             style={{ width: "100%", minHeight: "300px" }}
           />
+          <Button variant={"link"} onClick={loadSampleData} className="mr-auto text-left pl-0 h-2 py-4">
+            Load Sample Data
+          </Button>
           <Button variant={"outline"} onClick={sanitizeInput}>
             Sanitize Input
           </Button>
           <Button variant={"outline"} onClick={clearInput}>
             Clear
           </Button>
-          <Button variant={"link"} onClick={loadSampleData}>
-            Load Sample Data
-          </Button>
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </div>
         <div className="w-1/2 flex flex-col gap-2">
           {fieldOptions.length > 0 ? (
@@ -185,15 +198,8 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
             <p>No data detected</p>
           )}
           <div className="mt-auto flex flex-col gap-2">
-            <Input
-              value={filename}
-              onChange={(e) => setFilename(e.target.value)}
-              placeholder="Filename including path"
-              style={{ width: "100%" }}
-            />
-
             <Button
-              disabled={selectedFields.length === 0}
+              disabled={selectedFields.length === 0 || inputData.length === 0}
               onClick={downloadCSV}
             >
               {!inputData.length
