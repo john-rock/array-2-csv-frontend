@@ -28,7 +28,6 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
     errorMessage,
     handleCheckedChange,
     handleTextInput,
-    sanitizeInput,
     clearInput,
     loadSampleData,
     downloadCSV,
