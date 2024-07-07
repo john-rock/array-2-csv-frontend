@@ -5,7 +5,7 @@ import { sanitizeJsonInput, parseJson } from "@/utils/sanitizeJson";
 
 export const useCsvGenerator = (initialData: DataItem[] = []) => {
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
-  const [filename, setFilename] = useState<string>("");
+  const [filename, setFilename] = useState<string>("array-2-csv-export.csv");
   const [inputData, setInputData] = useState<DataItem[]>(initialData);
   const [inputText, setInputText] = useState<string>("");
   const [fieldOptions, setFieldOptions] = useState<string[]>([]);
@@ -21,8 +21,7 @@ export const useCsvGenerator = (initialData: DataItem[] = []) => {
   // Clear the fields if the inputText is empty
   useEffect(() => {
     if (inputText === "") {
-      setFieldOptions([]);
-      setSelectedFields([]);
+      clearInput();
     }
   }, [inputText]);
 

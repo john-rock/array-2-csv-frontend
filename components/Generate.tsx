@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/sheet";
 import { useCsvGenerator } from "@/hooks/useCsvGenerator";
 import { CsvGeneratorProps } from "@/types/types";
-import { Sparkles } from "lucide-react";
 import { Info } from "lucide-react";
 
 const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
