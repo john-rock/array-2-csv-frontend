@@ -110,7 +110,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
               {!inputData.length
                 ? "No data to transform"
                 : selectedFields.length === 0
-                ? "Select at least one field"
+                ? "Select at least one key"
                 : "Download CSV"}
             </Button>
           </div>
