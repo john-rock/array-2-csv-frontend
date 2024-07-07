@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -51,7 +50,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
                 field.
               </li>
               <li>
-                2. Click the <code>Sanitize Input</code> button to clean the
+                2. If neccessary, click the <code>Sanitize Input</code> button to clean the
                 data.
               </li>
               <li>3. Choose the fields to use as headers for the CSV file.</li>
