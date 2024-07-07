@@ -55,7 +55,12 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
           </SheetHeader>
         </SheetContent>
       </Sheet>
-      <div className="flex gap-8 w-full md:flex-row flex-col justify-between">
+      <h1 className="text-2xl font-bold">Array to CSV Converter</h1>
+      <p className="text-sm opacity-50 mb-4">
+        Easily transform your array of objects into downloadable CSV files.
+      </p>
+
+      <div className="flex gap-8 w-full md:flex-row flex-col justify-between mt-6">
         <div className="flex flex-col gap-2 md:w-1/2 w-full">
           <Textarea
             placeholder="Paste data here"
