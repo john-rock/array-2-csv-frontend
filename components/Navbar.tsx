@@ -9,10 +9,12 @@ export function Navbar() {
         <FileSpreadsheet />
         <span className="text-lg font-semibold">array-2-csv</span>
       </Link>
-      <Button variant="ghost" size="icon" className="rounded-full">
-        <GitBranch />
-        <span className="sr-only">Github Repo</span>
-      </Button>
+      <Link href="https://github.com/john-rock/array-2-csv-frontend" target="_blank">
+        <Button variant="ghost" size="icon" className="rounded-full">
+          <GitBranch />
+          <span className="sr-only">Github Repo</span>
+        </Button>
+      </Link>
     </header>
   );
 }
