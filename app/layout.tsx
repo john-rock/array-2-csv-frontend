@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google"
+import { Outfit as FontSans } from "next/font/google"
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import DotGridPattern from "@/components/DotGridPattern";
