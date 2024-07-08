@@ -87,7 +87,7 @@ const CsvGenerator: React.FC<CsvGeneratorProps> = ({ initialData = [] }) => {
           )}
         </div>
         <div className="md:w-1/2 flex flex-col gap-2 w-full">
-          <h2 className="font-medium">Keys to include in CSV:</h2>
+          <h2 className="font-medium">Keys to include as headers in CSV:</h2>
           {fieldOptions.length > 0 ? (
             fieldOptions.map((field) => (
               <div key={field} className="flex items-center gap-2">
